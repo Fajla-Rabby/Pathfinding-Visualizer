@@ -10,3 +10,6 @@
 .node-start{
     background-color: brown;
 }
+.node-visited{
+    background-color: blue;
+}

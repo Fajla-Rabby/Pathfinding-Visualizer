@@ -5,13 +5,21 @@
     display: inline-block;
 }
 .node-finish{
-    background-color: rgb(216, 61, 177);
+    /* background-color: rgb(216, 61, 177); */
+    background-color: #EC87C0;
 }
 .node-start{
-    background-color: rgb(241, 86, 58);
+    /* background-color: rgb(241, 86, 58); */
+    background-color: #ED5565;
 }
 .node-visited{
-    background-color:  rgba(24, 1, 77, 0.603);
+    /* background-color:  rgba(24, 1, 77, 0.603); */
+    background-color: #5D9CEC;
+}
+
+.node-shortest-path{
+    /* background-color: rgb(42, 165, 52); */
+    background-color: #FFCE54;
 }
 
 

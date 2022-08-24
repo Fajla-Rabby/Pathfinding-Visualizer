@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Node from './Node/Node';
-import { dijkstra } from '../Algorithm/dijkstra'
+import { dijkstra, getNodesInShortestPathOrder } from '../Algorithm/dijkstra'
 import './pathfindingVisualizer.css';
 
 const START_NODE_ROW = 10;
@@ -44,12 +44,12 @@ class PathfindingVisualizer extends Component {
 
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-        //   if (i === visitedNodesInOrder.length) {
-        //     setTimeout(() => {
-        //       this.animateShortestPath(nodesInShortestPathOrder);
-        //     }, 10 * i);
-        //     return;
-        //   }
+          if (i === visitedNodesInOrder.length) {
+            setTimeout(() => {
+              this.animateShortestPath(nodesInShortestPathOrder);
+            }, 25 * i);
+            return;
+          }
           setTimeout(() => {
             const node = visitedNodesInOrder[i];
             document.getElementById(`node-${node.row}-${node.col}`).className =
@@ -57,7 +57,17 @@ class PathfindingVisualizer extends Component {
               console.log(node);
           }, 25 * i);
         }
-      } 
+      }
+      
+      animateShortestPath(nodesInShortestPathOrder) {
+        for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+          setTimeout(() => {
+            const node = nodesInShortestPathOrder[i];
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              'node node-shortest-path';
+          }, 50 * i);
+        }
+      }
 
     visualizeDijkstra() {
         const { grid } = this.state;
@@ -65,8 +75,9 @@ class PathfindingVisualizer extends Component {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         //call dijkstra algorithm which gives us the array of visited node in order
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         //call animateDijkstra
-        this.animateDijkstra(visitedNodesInOrder);
+        this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
 

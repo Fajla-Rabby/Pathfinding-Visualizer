@@ -19,12 +19,10 @@ export function dijkstra(grid, startNode, finishNode) {
         sortNodesByDistance(unvisitedNodes);
         //closest node is write below here
         const closestNode = unvisitedNodes.shift();
-        // If we encounter a wall, we skip it.
-        //if (closestNode.isWall) continue;
         // If the closest node is at a distance of infinity,
         // we must be trapped and should therefore stop.
         if (closestNode.distance === Infinity) return visitedNodesInOrder;
-        //after every closest node I just append the closest node to this array of visitedNodesInOrder, because we need to animate the node we visited in order
+        //after every closest node, I just append the closest node to this array of visitedNodesInOrder, because we need to animate the node we visited in order
         closestNode.isVisited = true;
         visitedNodesInOrder.push(closestNode);
         //when closest node is the finish node and we are done
@@ -79,3 +77,8 @@ export function getNodesInShortestPathOrder(finishNode) {
     }
     return nodesInShortestPathOrder;
 }
+
+
+
+
+

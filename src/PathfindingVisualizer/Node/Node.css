@@ -1,15 +1,17 @@
 .node{
     width: 25px;
     height: 25px;
-    outline: 1px solid grey;
+    outline: 1px solid  rgb(175, 216, 248);
     display: inline-block;
 }
 .node-finish{
-    background-color: aqua;
+    background-color: rgb(216, 61, 177);
 }
 .node-start{
-    background-color: brown;
+    background-color: rgb(241, 86, 58);
 }
 .node-visited{
-    background-color: blue;
+    background-color:  rgba(24, 1, 77, 0.603);
 }
+
+

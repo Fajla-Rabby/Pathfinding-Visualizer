@@ -9,8 +9,8 @@ const FINISH_NODE_ROW = 10;
 const FINISH_NODE_COL = 35;
 
 class PathfindingVisualizer extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             grid: [],
         };
@@ -19,11 +19,11 @@ class PathfindingVisualizer extends Component {
     /*creating node with 15 row and 50 column*/
     componentDidMount() {
         const grid = getInitialGrid();
-        this.setState({ grid });
+        this.setState({grid});
     }
 
     //goes throuth all the nodes that we visited in order, for every node we are going to create new node of that node and we mark that one is "isVisited" and then we update our state (which is our grid) with that new node
-    animateDijkstra(visitedNodesInOrder) {
+   /* animateDijkstra(visitedNodesInOrder) {
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
                 const node = visitedNodesInOrder[i];
@@ -36,9 +36,28 @@ class PathfindingVisualizer extends Component {
                 };
                 newGrid[node.row][node.col] = newNode;
                 this.setState({ grid: newGrid });
-            }, 1000 * i);
+                // document.getElementById(`node-${node.row}-${node.col}`).className =
+                //     'node node-visited';
+            }, 10 * i);
         }
-    }
+    } */
+
+    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+        //   if (i === visitedNodesInOrder.length) {
+        //     setTimeout(() => {
+        //       this.animateShortestPath(nodesInShortestPathOrder);
+        //     }, 10 * i);
+        //     return;
+        //   }
+          setTimeout(() => {
+            const node = visitedNodesInOrder[i];
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              'node node-visited';
+              console.log(node);
+          }, 25 * i);
+        }
+      } 
 
     visualizeDijkstra() {
         const { grid } = this.state;
@@ -54,7 +73,7 @@ class PathfindingVisualizer extends Component {
 
     render() {
         const { grid } = this.state;
-
+        
         return (
             <>
                 <button className='btn' onClick={() => this.visualizeDijkstra()}>
@@ -68,10 +87,12 @@ class PathfindingVisualizer extends Component {
                                 <div key={rowIdx}>
                                     {
                                         row.map((node, nodeIdx) => {
-                                            const { isStart, isFinish, isVisited } = node;
+                                            const {row, col, isStart, isFinish, isVisited } = node;
                                             return (
                                                 //here i passed down properties based on the node (one start and one finish)
                                                 <Node
+                                                    col={col}
+                                                    row={row}
                                                     key={nodeIdx}
                                                     isStart={isStart}
                                                     isFinish={isFinish}
@@ -102,7 +123,7 @@ const getInitialGrid = () => {
         grid.push(currentRow);
     }
     return grid;
-}
+};
 
 //this method add some property that we might need later on (in the algorithm)
 const creatNode = (col, row) => {
@@ -116,9 +137,5 @@ const creatNode = (col, row) => {
         previousNode: null,
     };
 };
-
-
-
-
 
 export default PathfindingVisualizer;

@@ -8,7 +8,7 @@ export default class Node extends Component {
     // }
 
     render() {
-        const { col, row, isFinish, isStart, isVisited } = this.props;
+        const { col, row, isFinish, isStart, isVisited, onClickFunc } = this.props;
         //tarnary operator with if else
         const extraClassName = isFinish
             ? 'node-finish'
@@ -17,8 +17,9 @@ export default class Node extends Component {
                 : isVisited
                     ? 'node-visited'
                     : '';
-                    
+
         return <div
+            onClick={() => onClickFunc(col, row)}
             id={`node-${row}-${col}`}
             className={`node ${extraClassName}`}
         ></div>;

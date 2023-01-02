@@ -134,6 +134,8 @@ class PathfindingVisualizer extends Component {
 
     //   };
 
+    
+
 
     render() {
         const { grid, startOrEnd } = this.state;
@@ -146,14 +148,20 @@ class PathfindingVisualizer extends Component {
             justifyContent: "center",
         };
 
+        function refreshPage() {
+            window.location.reload(false);
+          }
+
 
 
 
         return (
             <>
                 <button className='btn' onClick={() => this.visualizeDijkstra()}>
-                    Visualize Dijkstra's Algorithm
+                    Start
                 </button>
+
+                <button className='btn' onClick={refreshPage}>Reset</button>
                 {/* <form>
                     <input id="" type="Number" name="num1"></input>
                 </form> */}

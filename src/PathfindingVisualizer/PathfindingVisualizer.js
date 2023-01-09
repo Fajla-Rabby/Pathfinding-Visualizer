@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import Node from './Node/Node';
 import { dijkstra, getNodesInShortestPathOrder } from '../Algorithm/dijkstra'
+import { bfs, bfsgetNodesInShortestPathOrder } from '../Algorithm/bfs';
 import './pathfindingVisualizer.css';
-
-
-
-// let START_NODE_ROW = 12;
-// let START_NODE_COL = 15;
-// let FINISH_NODE_ROW = 8;
-// let FINISH_NODE_COL = 35;
 
 class PathfindingVisualizer extends Component {
     constructor() {
@@ -24,6 +18,8 @@ class PathfindingVisualizer extends Component {
                 col: 35,
             },
             startOrEnd: "start",
+            speed: 25,
+
         };
 
     }
@@ -36,7 +32,6 @@ class PathfindingVisualizer extends Component {
         const { startValue, endValue } = this.state;
         const grid = getInitialGrid(startValue, endValue);
         this.setState({ grid });
-
 
         // const grid = getInitialGrid();
         // this.setState({ grid, });
@@ -84,12 +79,16 @@ class PathfindingVisualizer extends Component {
          }
      } */
 
+    handleSpeedChange = (event) => {
+        this.setState({ speed: event.target.value });
+    };
+
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
                     this.animateShortestPath(nodesInShortestPathOrder);
-                }, 25 * i);
+                }, this.state.speed * i);
                 return;
             }
             setTimeout(() => {
@@ -97,7 +96,7 @@ class PathfindingVisualizer extends Component {
                 document.getElementById(`node-${node.row}-${node.col}`).className =
                     'node node-visited';
                 console.log(node);
-            }, 25 * i);
+            }, this.state.speed * i);
         }
     }
 
@@ -107,7 +106,7 @@ class PathfindingVisualizer extends Component {
                 const node = nodesInShortestPathOrder[i];
                 document.getElementById(`node-${node.row}-${node.col}`).className =
                     'node node-shortest-path';
-            }, 50 * i);
+            }, this.state.speed * i);
         }
     }
 
@@ -123,6 +122,36 @@ class PathfindingVisualizer extends Component {
         this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
+    visualizeBFS() {
+        const { grid, startValue, endValue } = this.state;
+        console.log(endValue.col);
+        console.log(grid);
+        const startNode = grid[startValue.row][startValue.col];
+        const finishNode = grid[endValue.row][endValue.col];
+        //call bfs algorithm which gives us the array of visited node in order
+        const visitedNodesInOrder = bfs(grid, startNode, finishNode); // call the BFS function
+        const nodesInShortestPathOrder = bfsgetNodesInShortestPathOrder(finishNode);
+        this.animateBFS(visitedNodesInOrder, nodesInShortestPathOrder);
+    }
+
+    animateBFS(visitedNodesInOrder, nodesInShortestPathOrder) {
+        console.log(visitedNodesInOrder, nodesInShortestPathOrder);
+
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            if (i === visitedNodesInOrder.length) {
+                setTimeout(() => {
+                    this.animateShortestPath(nodesInShortestPathOrder);
+                }, this.state.speed * i);
+                return;
+            }
+            setTimeout(() => {
+                const node = visitedNodesInOrder[i];
+                document.getElementById(`node-${node.row}-${node.col}`).className =
+                    'node node-visited';
+            }, this.state.speed * i);
+        }
+    }
+
     // //increment value of nodes 
     // handleIncrement = (col) => {
     //     console.log(col); 
@@ -134,7 +163,28 @@ class PathfindingVisualizer extends Component {
 
     //   };
 
-    
+    clearBoard = () => {
+        const { startValue, endValue, isVisited, visitedNodesInOrder, nodesInShortestPathOrder } = this.state;
+        // TODO: reset the grid and start/end values here
+        const newGrid = [];
+        for (let row = 0; row < 15; row++) {
+            const currentRow = [];
+            for (let col = 0; col < 50; col++) {
+                currentRow.push(creatNode(col, row, startValue, endValue));
+            }
+            newGrid.push(currentRow);
+        }
+
+        this.setState({
+            grid: newGrid, isVisited: false, startValue: { row: 10, col: 15 }, endValue: { row: 10, col: 35 }
+        });
+        this.setState({ visitedNodesInOrder: [], nodesInShortestPathOrder: [] });
+        console.log("newGrid", newGrid);
+        console.log("isVisited", isVisited);
+        console.log("visitedNodesInOrder", visitedNodesInOrder);
+        console.log("nodesInshortestpathorder", nodesInShortestPathOrder);
+        // console.log(visitedNodesInOrder);
+    };
 
 
     render() {
@@ -148,12 +198,9 @@ class PathfindingVisualizer extends Component {
             justifyContent: "center",
         };
 
-        function refreshPage() {
-            window.location.reload(false);
-          }
-
-
-
+        // function refreshPage() {
+        //     window.location.reload(false);
+        //   }
 
         return (
             <>
@@ -161,17 +208,19 @@ class PathfindingVisualizer extends Component {
                     Start
                 </button>
 
-                <button className='btn' onClick={refreshPage}>Reset</button>
-                {/* <form>
-                    <input id="" type="Number" name="num1"></input>
-                </form> */}
+                <button className='btn' onClick={() => this.visualizeBFS()}>
+                    BFS
+                </button>
 
-                {/* <button
-                    onClick={() => this.handleIncrement()}
-                    className="button btn-secondary btn-sm"
-                >
-                    +
-                </button> */}
+                <button className='btn' onClick={() => this.clearBoard()}>Clear Board</button>
+
+                <input
+                    type="range"
+                    min={1}
+                    max={500}
+                    value={this.state.speed}
+                    onChange={this.handleSpeedChange}
+                />
 
                 <div style={radioStyle}>
                     <input
@@ -193,7 +242,6 @@ class PathfindingVisualizer extends Component {
                     />
                     <label htmlFor="end">Select Ending Point</label>
                 </div>
-
 
                 <div className='grid'>
                     {

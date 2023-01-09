@@ -8,7 +8,7 @@ export function dijkstra(grid, startNode, finishNode) {
     //no ds we use, only this array for keeping track of closest unvisited node by distance is 
     const visitedNodesInOrder = [];
     //set the distance of start node to 0;
-    startNode.distance = 0;
+    startNode.distance = 0; 
     //set unvisited nodes to get all the nodes
     const unvisitedNodes = getAllNodes(grid);
 

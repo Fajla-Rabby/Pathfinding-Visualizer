@@ -198,29 +198,36 @@ class PathfindingVisualizer extends Component {
             justifyContent: "center",
         };
 
+        const speedstyle={
+            // marginBlock: ""
+        }
+
         // function refreshPage() {
         //     window.location.reload(false);
         //   }
 
         return (
+            
             <>
                 <button className='btn' onClick={() => this.visualizeDijkstra()}>
                     Start
                 </button>
 
-                <button className='btn' onClick={() => this.visualizeBFS()}>
+              {/*   <button className='btn' onClick={() => this.visualizeBFS()}>
                     BFS
                 </button>
-
-                <button className='btn' onClick={() => this.clearBoard()}>Clear Board</button>
-
+ */}
+                {/* <button className='btn' onClick={() => this.clearBoard()}>Clear Board</button> */}
+                <span className='m'>Max</span>
                 <input
+                    style={speedstyle}
                     type="range"
                     min={1}
                     max={500}
                     value={this.state.speed}
                     onChange={this.handleSpeedChange}
                 />
+                <span className='m'>Min</span>
 
                 <div style={radioStyle}>
                     <input
